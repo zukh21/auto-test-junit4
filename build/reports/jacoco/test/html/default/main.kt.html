@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">autotest</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">fun main(){
+<span class="nc" id="L2">    println(transfer(&quot;Visa&quot;, amountTransfer = 200000F))</span>
+<span class="nc" id="L3">}</span>
+
+// Р¤СѓРЅРєС†РёСЏ, С‡С‚РѕР±С‹ РїСЂРѕРІРµСЂРёС‚СЊ РєРѕРјРёСЃСЃРёСЏ РїРµСЂРµРІРѕРґР°
+<span class="nc" id="L6">fun transferFee(cardType: String = &quot;Vk pay&quot;, amountTransefer: Float): Float {</span>
+<span class="pc bpc" id="L7" title="2 of 3 branches missed.">    val fee = when (cardType){</span>
+<span class="fc" id="L8">        &quot;Visa&quot;, &quot;РњРёСЂ&quot; -&gt; (amountTransefer / 100) * 0.75F</span>
+<span class="nc" id="L9">        &quot;Mastercard&quot;, &quot;Maestro&quot; -&gt; ((amountTransefer / 100) * 0.6F) + 20</span>
+<span class="nc" id="L10">        else -&gt; 0F</span>
+    }
+<span class="fc" id="L12">    return fee</span>
+}
+
+// Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРІРѕРґР° Рё РІС‹РІРѕРґ РЅР° СЌРєСЂР°РЅ
+<span class="nc" id="L16">fun transfer( cardType: String, amountPreviousTransfers:Float = 0F, amountTransfer: Float): String {</span>
+<span class="nc" id="L17">    val  cards = arrayListOf&lt;String&gt;(&quot;Visa&quot;, &quot;РњРёСЂ&quot;, &quot;Mastercard&quot;, &quot;Maestro&quot;)</span>
+//    РћРіСЂР°РЅРёС‡РµРЅРёРµ СЃСѓРјРјР° РїРµСЂРµРІРѕРґС‹
+<span class="nc" id="L19">    val maxTransferAtOnce: Float = 15_000F</span>
+<span class="nc" id="L20">    val maxTransferPerMonthWithVkPay: Float = 40_000F</span>
+<span class="nc" id="L21">    val maxTransferPerMonthWithCard: Float = 600_000F</span>
+<span class="nc" id="L22">    val maxTransferPerDayWithCard: Float = 150_000F</span>
+//    РљРѕРјРёСЃСЃРёСЏ РїРµСЂРµРІРѕРґР°
+<span class="nc" id="L24">    val fee = transferFee( cardType = cardType, amountTransefer = amountTransfer)</span>
+//    РџСЂРѕРІРµСЂРєР° РЎСѓРјРјР° РїРµСЂРµРІРѕРґР° СЃ РєР°СЂС‚РѕР№ Рё СЃ РІРє РѕРїР»Р°С‚РѕР№
+<span class="nc" id="L26">    val checkTransferAmountWithCard = checkTransferAmountWithCard(cardType = cardType, amountTransfer = amountTransfer)</span>
+<span class="nc" id="L27">    val checkTransferAmountWithVkPay = checkTransferAmountWithVkPay(amountTransfer = amountTransfer, cardType = cardType)</span>
+//    РџСЂРѕРІРµСЂРєР° РїРµСЂРµРІРѕРґР° Рё РІС‹РІРѕРґРёС‚ РЅР° СЌРєСЂР°РЅ
+<span class="nc bnc" id="L29" title="All 2 branches missed.">    return if (cardType in cards){</span>
+<span class="nc" id="L30">        when(checkTransferAmountWithCard){</span>
+<span class="nc bnc" id="L31" title="All 4 branches missed.">            -1F -&gt; (&quot;Р’Р°С€ Р»РёРјРёС‚ РѕРіСЂР°РЅРёС‡РµРЅ! Р’С‹ РјРѕР¶РµС‚Рµ РїРµСЂРµРІРµСЃС‚Рё ${maxTransferPerDayWithCard} СЂСѓР±Р»РµР№ РІ РґРµРЅСЊ.&quot;)</span>
+<span class="nc bnc" id="L32" title="All 4 branches missed.">            -2F -&gt; (&quot;Р’Р°С€ Р»РёРјРёС‚ РѕРіСЂР°РЅРёС‡РµРЅ! Р’С‹ РјРѕР¶РµС‚Рµ РїРµСЂРµРІРµСЃС‚Рё ${maxTransferPerMonthWithCard} СЂСѓР±Р»РµР№ РІ РјРµСЃСЏС†.&quot;)</span>
+<span class="nc" id="L33">            else -&gt; ((&quot;РЎСѓРјРјР° РЅР° РїРµСЂРµРІРѕРґ - ${amountTransfer}, РєРѕРјРёСЃСЃРёСЏ - ${fee},&quot; +</span>
+<span class="nc" id="L34">                    &quot;СЃРЅРёРјР°РµС‚СЃСЏ - ${amountTransfer + fee}, Р’Р°С€ РїРѕСЃР»РµРґРЅРёР№ РїРµСЂРµРІРѕРґ - ${amountPreviousTransfers}&quot;))</span>
+        }
+    }else{
+<span class="nc" id="L37">        when(checkTransferAmountWithVkPay){</span>
+<span class="nc bnc" id="L38" title="All 4 branches missed.">            -1F -&gt; (&quot;Р’Р°С€ Р»РёРјРёС‚ РѕРіСЂР°РЅРёС‡РµРЅ! Р’С‹ РјРѕР¶РµС‚Рµ РїРµСЂРµРІРµСЃС‚Рё ${maxTransferAtOnce} СЂСѓР±Р»РµР№ РІ СЂР°Р·Сѓ.&quot;)</span>
+<span class="nc bnc" id="L39" title="All 4 branches missed.">            -2F -&gt; (&quot;Р’Р°С€ Р»РёРјРёС‚ РѕРіСЂР°РЅРёС‡РµРЅ! Р’С‹ РјРѕР¶РµС‚Рµ РїРµСЂРµРІРµСЃС‚Рё ${maxTransferPerMonthWithVkPay} СЂСѓР±Р»РµР№ РІ РјРµСЃСЏС†.&quot;)</span>
+<span class="nc" id="L40">            else -&gt; ((&quot;РЎСѓРјРјР° РЅР° РїРµСЂРµРІРѕРґ - ${amountTransfer}, РєРѕРјРёСЃСЃРёСЏ - ${fee},&quot; +</span>
+<span class="nc" id="L41">                    &quot;СЃРЅРёРјР°РµС‚СЃСЏ - ${amountTransfer + fee}, Р’Р°С€ РїРѕСЃР»РµРґРЅРёР№ РїРµСЂРµРІРѕРґ - ${amountPreviousTransfers}&quot;))</span>
+        }
+    }
+}
+
+
+// Р¤СѓРЅРєС†РёСЏ, С‡С‚РѕР±С‹ РїСЂРѕРІРµСЂРёС‚СЊ СЃСѓРјРјР° РїРµСЂРµРІРѕРґР° СЃ РєР°СЂС‚РѕР№
+<span class="fc" id="L48">fun checkTransferAmountWithCard(amountTransfer: Float, cardType: String, amountPreviousTransfers: Float = 0F): Float{</span>
+<span class="fc" id="L49">    val  cards = arrayListOf&lt;String&gt;(&quot;Visa&quot;, &quot;РњРёСЂ&quot;, &quot;Mastercard&quot;, &quot;Maestro&quot;)</span>
+<span class="fc" id="L50">    val maxTransferPerMonthWithCard: Float = 600_000F</span>
+<span class="fc" id="L51">    val maxTransferPerDayWithCard: Float = 150_000F</span>
+<span class="pc bpc" id="L52" title="1 of 6 branches missed.">    return if (amountTransfer &gt; maxTransferPerDayWithCard &amp;&amp; cardType in cards &amp;&amp; amountTransfer &lt; maxTransferPerMonthWithCard){</span>
+<span class="fc" id="L53">        -1F</span>
+<span class="pc bpc" id="L54" title="1 of 4 branches missed.">    }else if ((amountTransfer+amountPreviousTransfers) &gt; maxTransferPerMonthWithCard  &amp;&amp; cardType in cards){</span>
+<span class="fc" id="L55">        -2F</span>
+    }else{
+<span class="fc" id="L57">        1F</span>
+    }
+}
+
+
+// Р¤СѓРЅРєС†РёСЏ, С‡С‚РѕР±С‹ РїСЂРѕРІРµСЂРёС‚СЊ СЃСѓРјРјР° РїРµСЂРµРІРѕРґР° СЃ Р’Рє РѕРїР»Р°С‚РѕР№
+<span class="fc" id="L63">fun checkTransferAmountWithVkPay(amountTransfer: Float, cardType: String, amountPreviousTransfers: Float = 0F): Float{</span>
+<span class="fc" id="L64">    val  cards = arrayListOf&lt;String&gt;(&quot;Vk pay&quot;)</span>
+<span class="fc" id="L65">    val maxTransferAtOnce: Float = 15_000F</span>
+<span class="fc" id="L66">    val maxTransferPerMonthWithVkPay: Float = 40_000F</span>
+<span class="pc bpc" id="L67" title="1 of 6 branches missed.">    return if (amountTransfer &gt; maxTransferAtOnce &amp;&amp; cardType in cards &amp;&amp; amountTransfer &lt; maxTransferPerMonthWithVkPay){</span>
+<span class="fc" id="L68">        -1F</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">    }else if ((amountTransfer+amountPreviousTransfers) &gt; maxTransferPerMonthWithVkPay  &amp;&amp; cardType in cards){</span>
+<span class="fc" id="L70">        -2F</span>
+    }else{
+<span class="fc" id="L72">        1F</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
