@@ -7,7 +7,7 @@ class MainKtTest {
 
     internal class MainKtTest {
         val cardType = "Visa"
-        val vkPay = "Vk pay"
+        val vkPay = "Vk pa"
 
         @Test
         fun transferFee() {
